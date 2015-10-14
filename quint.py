@@ -1,5 +1,4 @@
-"""
-An interface to facilitate a chain of Quantum Espresso calculations
+""" An interface to facilitate a chain of Quantum Espresso calculations
 
 We create a modular structure in which Quantum Espresso calculations can easily
 be chained and combined as needed. This makes redundant copying of input
