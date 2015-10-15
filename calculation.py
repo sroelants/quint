@@ -1,6 +1,6 @@
 class Calculation(object):
     """ An abstract class all calculations inherit from. """
-
+""" This is a comment!"""
 class ScfCalculation(Calculation):
     """ An SCF calculation. """
 
