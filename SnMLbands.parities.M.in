@@ -1,0 +1,38 @@
+&control
+prefix = 'SnMLbands'
+calculation = 'scf'
+pseudodir = '/user/antwerpen/201/vsc20155/DFT/QEspresso/pseudopotentials'
+outdir = '/tmp/SnMLbands.80105.mn.hopper.antwerpen.vsc
+verbosity = 'high'
+nstep = 200
+/
+
+&system
+ibrav = 4
+celldm(1) = 8.4410653932
+celldm(2) = 1
+celldm(3) = 10
+nat = 2
+ntyp = 1
+ecutwfc = 50
+ecutrho = 200
+occupations = 'smearing'
+degaus = 0.02
+smearing = 'mp'
+nbnd = 8
+lspinorb = .false.
+noncolin = .false.
+/
+
+&electrons
+conv_thr = 10d-8
+/
+
+ATOMIC SPECIES
+Sn 118.71 Sn.pz-bhs.UPF
+
+ATOMIC POSITIONS (crystal)
+Sn 0.33333333 0.66666666 0.0
+Sn 0.66666666 0.33333333 0.0
+
+0.5     0.0     0.0     100
