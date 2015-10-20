@@ -89,7 +89,6 @@ class PwxCalculation(object):
                  + self.kpts_input(p)
                 )
 
-
 class ScfCalculation(PwxCalculation):
     """ An SCF calculation.
     
@@ -198,14 +197,29 @@ class BandsCalculation(PwxCalculation):
         bandsinputstring = self.generate_bandsinput(parameters)
         print(bandsinputstring)
         # Run pw.x and store output
-        #self.output = self.start_calculation(self.inputfilename)
+        self.output = self.start_calculation(self.inputfilename)
 
     def control_input(self, p):
         return  (   "calculation = 'bands'\n"+
                     super().control_input(p)
                 )
     
+    def kpts_input(self, p):
+        return dedent(  """
+                        K_POINTS (crystal_b)
+                        4
+                        0.5         0.0         0.0     100
+                        0.0         0.0         0.0     100
+                        0.33333333  0.333333333 0.0     100
+                        0.5         0.5         0.0     100
+                        """)
+                    
     def generate_bandsinput(self, p):
+        """ Generate the bands.in input file.
+
+        The file is presented in a Template string, which we can substitute
+        against the parameters dictionary.
+        """
         inputstr =  """
                     &bands
                     prefix = '$prefix'
@@ -223,8 +237,32 @@ class BandsCalculation(PwxCalculation):
         #TODO implement ACTUAL calculation starter
         outfilename="SnMLbands.bands.out"
         #call(["cp","bandsoutfile", outfilename])
-        return BandsOutput(outfilename)
+        return BandsOutput(outfilename, "bands.dat")
 
+class ParitiesCalculation(PwxCalculation):
+    """ A parities calculation.
+
+    A non-scf calculation in TRI points (I'll assume these are Gamma and M, in a
+    hexagonal lattice!).
+    """
+    def __init__(self, parameters, structure):
+        super().__init__(parameters, structure)
+        outfiles = []
+        for point in ["G", "K"]:
+            #pw.x input generation
+            p = self.parameters.update({'point': point}) 
+            inputstring = self.generate_input(p)
+            inputfilename = Template("$prefix.parities.$point.in").substitute(p)
+            write_to_file(inputstring, inputfilename)
+            outfiles.append(self.start_calculation(inputfilename))
+        
+        self.output = ParitiesOutput(outfiles)
+        
+    def start_calculation(self, inputstr, filename):
+        #TODO implement actual calculation
+        outputfile = "Outfile"
+        return outputfile
+    
 class Structure:
     ''' A wrapper for a crystal structure.
         

@@ -104,6 +104,8 @@ class VcRelaxOutput(RelaxOutput):
         return alat*scale
 
 class BandsOutput(PwxOutput):
-    def __init__(self, out):
+    def __init__(self, out, dat):
         super().__init__(out)
+        self.dat = dat
+
 
