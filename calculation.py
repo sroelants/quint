@@ -9,7 +9,7 @@ class PwxCalculation(object):
     def __init__(self, p, s):
         self.pars = p
         self.struc = s
-        
+
     def control_input(self, p):
         return ("prefix = '" + p["prefix"] + "'\n"
                 "calculation = 'scf'\n"
@@ -50,7 +50,7 @@ class PwxCalculation(object):
                 +"\n".join([x.info() for x in set(s.specieslist)])+
                 "\n\n"
                 "ATOMIC POSITIONS (crystal)\n"
-                +"\n".join([x.name +" "+ str(y[0]) +" "+ str(y[1]) +" "+ 
+                +"\n".join([x.name +" "+ str(y[0]) +" "+ str(y[1]) +" "+
                     str(y[2]) for (x,y) in zip(s.specieslist, s.coordlist)])
                )
 
@@ -61,12 +61,12 @@ class PwxCalculation(object):
 
     def generate_input(self, p, s):
         ''' Generates an input file from a structure and parameter set
-        
+
             Piece together an SCF run input file from a structure and set
             of parameters. The building blocks are mostly common to all
-            pw.x calculations, but the file is pieced together for a 
+            pw.x calculations, but the file is pieced together for a
             vanilla scf calculation specifically.
-       
+
             Parameters:
             -----------
             p: Dictionary of QE parameters
@@ -91,15 +91,15 @@ class PwxCalculation(object):
 
 class ScfCalculation(PwxCalculation):
     """ An SCF calculation.
-    
-    On initialization, an input file is generated from the 
-    parameters and structure. The input file is run, and 
+
+    On initialization, an input file is generated from the
+    parameters and structure. The input file is run, and
     an Output object is generated, which we can use to
     parse all the information.
     """
     def __init__(self, parameters, structure):
         PwxCalculation.__init__(self, parameters, structure)
-        
+
         # Input generation
         inputstring = self.generate_input(parameters, structure)
         self.inputfilename =  parameters['prefix']+'.scf.in'
@@ -121,20 +121,20 @@ class ScfCalculation(PwxCalculation):
 
 class RelaxCalculation(PwxCalculation):
     """ A relaxation calculation.
-    
-    On initialization, an input file is generated from the 
-    parameters and structure. The input file is run, and 
+
+    On initialization, an input file is generated from the
+    parameters and structure. The input file is run, and
     an Output object is generated, which we can use to
     parse all the information.
     """
     def __init__(self, parameters, structure):
         PwxCalculation.__init__(self, parameters, structure)
-        
+
         # Input generation
         inputstring = self.generate_input(parameters, structure)
         self.inputfilename =  parameters['prefix']+'.relax.in'
         write_to_file(inputstring,self.inputfilename)
-        
+
         # Run pw.x and store output
         self.output = self.start_calculation(self.inputfilename)
 
@@ -162,7 +162,7 @@ class VcRelaxCalculation(PwxCalculation):
         inputstring = self.generate_input(parameters, structure)
         self.inputfilename =  parameters['prefix']+'.vcrelax.in'
         write_to_file(inputstring, self.inputfilename)
-        
+
         # Run pw.x and store output
         self.output = self.start_calculation(self.inputfilename)
 
@@ -187,12 +187,12 @@ class VcRelaxCalculation(PwxCalculation):
 class BandsCalculation(PwxCalculation):
     def __init__(self, parameters, structure):
         super().__init__(parameters, structure)
-        
+
         # pw.x Input generation
         inputstring = self.generate_input(parameters, structure)
         self.inputfilename =  parameters['prefix']+'.bands.in'
         write_to_file(inputstring, self.inputfilename)
-        
+
         # bands.x input generation
         bandsinputstring = self.generate_bandsinput(parameters)
         print(bandsinputstring)
@@ -203,17 +203,8 @@ class BandsCalculation(PwxCalculation):
         return  (   "calculation = 'bands'\n"+
                     super().control_input(p)
                 )
-    
-    def kpts_input(self, p):
-        return dedent(  """
-                        K_POINTS (crystal_b)
-                        4
-                        0.5         0.0         0.0     100
-                        0.0         0.0         0.0     100
-                        0.33333333  0.333333333 0.0     100
-                        0.5         0.5         0.0     100
-                        """)
-                    
+
+
     def generate_bandsinput(self, p):
         """ Generate the bands.in input file.
 
@@ -232,7 +223,7 @@ class BandsCalculation(PwxCalculation):
 
         return Template(dedent(inputstr)).substitute(p)
 
-    
+
     def start_calculation(self, filename):
         #TODO implement ACTUAL calculation starter
         outfilename="SnMLbands.bands.out"
@@ -250,26 +241,26 @@ class ParitiesCalculation(PwxCalculation):
         outfiles = []
         for point in ["G", "K"]:
             #pw.x input generation
-            p = self.parameters.update({'point': point}) 
+            p = self.parameters.update({'point': point})
             inputstring = self.generate_input(p)
             inputfilename = Template("$prefix.parities.$point.in").substitute(p)
             write_to_file(inputstring, inputfilename)
             outfiles.append(self.start_calculation(inputfilename))
-        
+
         self.output = ParitiesOutput(outfiles)
-        
+
     def start_calculation(self, inputstr, filename):
         #TODO implement actual calculation
         outputfile = "Outfile"
         return outputfile
-    
+
 class Structure:
     ''' A wrapper for a crystal structure.
-        
+
     A wrapper to contain all info on the atoms, their masses, pseudopotentials,
     atomic positions, etc...
-    
-    Instance variables: 
+
+    Instance variables:
         specieslist: List of species
         coordlist: List of position vectors (as numpy arrays)
         lattice: A Lattice holding the Bravais lattice info
