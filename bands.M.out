@@ -1,0 +1,72 @@
+
+     Program BANDS v.5.0.2 (svn rev. 9656) starts on 21Sep2015 at  9:59:30 
+
+     This program is part of the open-source Quantum ESPRESSO suite
+     for quantum simulation of materials; please cite
+         "P. Giannozzi et al., J. Phys.:Condens. Matter 21 395502 (2009);
+          URL http://www.quantum-espresso.org", 
+     in publications or presentations arising from this work. More details at
+     http://www.quantum-espresso.org/quote.php
+
+     Parallel version (MPI), running on    20 processors
+     R & G space division:  proc/nbgrp/npool/nimage =      20
+
+   Info: using nr1, nr2, nr3 values from input
+
+   Info: using nr1s, nr2s, nr3s values from input
+
+     IMPORTANT: XC functional enforced from input :
+     Exchange-correlation      = SLA-PW-PBX-PBC ( 1 4 3 4 0)
+     EXX-fraction              =        0.00
+     Any further DFT definition will be discarded
+     Please, verify this is what you really want
+
+ 
+     Parallelization info
+     --------------------
+     sticks:   dense  smooth     PW     G-vecs:    dense   smooth      PW
+     Min          52      52     12                13836    13836    1686
+     Max          53      53     13                13867    13867    1747
+     Sum        1045    1045    253               276909   276909   34409
+ 
+
+ **************************************************************************
+
+                    xk=(   0.00000,   0.00000,   0.00000  )
+
+     point group D_3d (-3m) 
+     there are  6 classes
+     the character table:
+
+       E     2C3   3C2'  i     2S6   3s_d 
+A_1g   1.00  1.00  1.00  1.00  1.00  1.00
+A_2g   1.00  1.00 -1.00  1.00  1.00 -1.00
+E_g    2.00 -1.00  0.00  2.00 -1.00  0.00
+A_1u   1.00  1.00  1.00 -1.00 -1.00 -1.00
+A_2u   1.00  1.00 -1.00 -1.00 -1.00  1.00
+E_u    2.00 -1.00  0.00 -2.00  1.00  0.00
+
+     the symmetry operations in each class:
+     E        1
+     3C2'     2    5    6
+     2C3      3    4
+     i        7
+     3s_d     8   11   12
+     2S6      9   10
+
+     Band symmetry, D_3d (-3m)  point group:
+
+     e(  1 -  1) =    -13.37232  eV     1   --> A_1g L_1       
+     e(  2 -  2) =    -11.37249  eV     1   --> A_2u L_2'      
+     e(  3 -  3) =     -7.51869  eV     1   --> A_1g L_1       
+     e(  4 -  4) =     -5.80695  eV     1   --> A_2u L_2'      
+     e(  5 -  6) =     -4.01772  eV     2   --> E_g  L_3       
+     e(  7 -  7) =     -3.19890  eV     1   --> A_2u L_2'      
+     e(  8 -  8) =     -2.29049  eV     1   --> A_1g L_1       
+     e(  9 - 10) =     -2.24698  eV     2   --> E_u  L_3'      
+     e( 11 - 11) =     -0.57249  eV     1   --> A_1g L_1       
+     e( 12 - 13) =     -0.54528  eV     2   --> E_u  L_3'      
+     e( 14 - 15) =      0.41444  eV     2   --> E_g  L_3       
+     e( 16 - 16) =      1.00544  eV     1   --> A_2u L_2'      
+
+ **************************************************************************
